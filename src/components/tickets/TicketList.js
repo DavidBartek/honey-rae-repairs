@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import "./Tickets.css"
 import { useNavigate } from "react-router-dom"
 
-export const TicketList = () => {
+export const TicketList = ({ searchTermState }) => { // searchTermsState: state variable "inherited" from parent, TicketContainer.
     
     // *** useState() hooks (also useNavigate()) ***
     
@@ -19,6 +19,21 @@ export const TicketList = () => {
     const honeyUserObject = JSON.parse(localHoneyUser)
 
     // *** useEffect() hooks ***
+
+
+    // filteres tickets array by what is passed in to the search bar.
+    // dependencies array is observing changes to inherited searchTermState state
+    useEffect(
+        () => {
+            // console.log(searchTermState)
+            const searchedTickets = tickets.filter(ticket => {
+                return ticket.description.toLowerCase().includes(searchTermState.toLowerCase())
+            })
+            setFiltered(searchedTickets)
+        },
+        [searchTermState]
+    )
+
 
     // fetches serviceTickets data (array) from API; invoking setTickets to set tickets state to hold this data.
     // dependencies array is empty; therefore componenent's initial state is being observed.
