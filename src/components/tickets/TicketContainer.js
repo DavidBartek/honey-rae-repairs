@@ -11,7 +11,8 @@ export const TicketContainer = () => {
         <TicketSearch setterFunction={setSearchTerms} example1={100} example2={"foobar"}/>
         <TicketList searchTermState={searchTerms}/>
     </> // setterFunction and searchTermState are PROPS. 
-    // Think of them as key:value pairs assoc. w/ a component containing state, 
+    // Think of them as key:value pairs assoc. w/ a component containing state,
+    // now located in the parent to be passed to children
     // now accessible places outside of that component.
     // see TicketSearch in the devTools
 }
