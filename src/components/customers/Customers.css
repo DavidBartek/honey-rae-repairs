@@ -1,11 +1,11 @@
-.employees {
+.customers {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly
 }
 
-.employee {
+.customer {
     background-color: hotpink;
     border: 2x dotted fuchsia;
     color: black;
@@ -13,13 +13,13 @@
     margin: 0.5rem;
 }
 
-.employee__header {
+.customer__header {
     font-size: larger;
     font-weight: 700;
     line-height: 3rem;
 }
 
-.employee__footer {
+.customer__isStaff {
     margin: 1rem 0 0.25rem 0;
     font-style: oblique;
 }

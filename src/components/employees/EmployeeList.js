@@ -26,4 +26,4 @@ export const EmployeeList = () => {
     </article>
 }
 
-// ^^ deconstructs employee into 3 props
+// ^^ deconstructs employee into 3 props, passes down into the Employee module
