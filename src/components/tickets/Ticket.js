@@ -19,16 +19,17 @@ export const Ticket = ({ employees, ticketObject, currentUser, getAllTickets }) 
     const userEmployee = employees.find(employee => employee.userId === currentUser.id)
 
 
-    // determines if current user can close a ticket 
+    // determines if current user (employee only) can close a ticket 
     // (compare assignedEmployee with userEmployee AND evaluates if ticket already has a "dateCompleted")
     const canClose = () => {
-        if (userEmployee?.id === assignedEmployee?.id && ticketObject.dateCompleted === "") {
+        if (userEmployee?.id === assignedEmployee?.id && ticketObject.dateCompleted === "" && currentUser.staff) {
             return <button onClick={closeTicket} className="ticket__finish">Finish</button>
         } else {
             return ""
         }
     }
 
+    // helper function for canClose
     // updates the ticket with a new date completed
     const closeTicket = () => {
         const copy = {
@@ -49,6 +50,23 @@ export const Ticket = ({ employees, ticketObject, currentUser, getAllTickets }) 
             .then(getAllTickets)
     }
 
+    const deleteButton = () => {
+        if (!currentUser.staff) {
+            return <button onClick={() => {
+                fetch(`http://localhost:8088/serviceTickets/${ticketObject.id}`, {
+                    method: "DELETE"
+                })
+                    .then(() => {
+                        getAllTickets()
+                    })
+            }} className="ticket__finish">Delete</button>
+        } else {
+            return ""
+        }
+    }
+
+    // if user ia an employee, generates a button enabling user to claim a ticket
+    //(POST to API an object to the serviceTicket resource)
     const buttonOrNoButton = () => {
         if (currentUser.staff) {
            return <button
@@ -94,6 +112,9 @@ export const Ticket = ({ employees, ticketObject, currentUser, getAllTickets }) 
                 }
                 {
                     canClose()
+                }
+                {
+                    deleteButton()
                 }
             </footer>
         </section>
