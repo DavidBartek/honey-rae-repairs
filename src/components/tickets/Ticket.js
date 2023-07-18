@@ -1,4 +1,4 @@
-// Honey Rae ch 16
+// Honey Rae ch 16, ch 17
 // "Helper" component for TicketList
 // accepts 3 props from TicketList
 // manages data between 3 resources: tickets, employees, tickets-to-employees.
@@ -17,6 +17,37 @@ export const Ticket = ({ employees, ticketObject, currentUser, getAllTickets }) 
 
     // find employee profile object for current user
     const userEmployee = employees.find(employee => employee.userId === currentUser.id)
+
+
+    // determines if current user can close a ticket 
+    // (compare assignedEmployee with userEmployee AND evaluates if ticket already has a "dateCompleted")
+    const canClose = () => {
+        if (userEmployee?.id === assignedEmployee?.id && ticketObject.dateCompleted === "") {
+            return <button onClick={closeTicket} className="ticket__finish">Finish</button>
+        } else {
+            return ""
+        }
+    }
+
+    // updates the ticket with a new date completed
+    const closeTicket = () => {
+        const copy = {
+            userId: ticketObject.userId,
+            description: ticketObject.description,
+            emergency: ticketObject.emergency, 
+            dateCompleted: new Date()
+        }
+
+        return fetch(`http://localhost:8088/serviceTickets/${ticketObject.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(copy)
+        })
+            .then(res => res.json())
+            .then(getAllTickets)
+    }
 
     const buttonOrNoButton = () => {
         if (currentUser.staff) {
@@ -58,8 +89,11 @@ export const Ticket = ({ employees, ticketObject, currentUser, getAllTickets }) 
             <footer>
                 {
                     ticketObject.employeeTickets.length
-                        ? `Currently being worked on by ${assignedEmployee !== null ? assignedEmployee?.user?.fullName : ""}`
+                        ? `Assigned to ${assignedEmployee !== null ? assignedEmployee?.user?.fullName : ""}`
                         : buttonOrNoButton()
+                }
+                {
+                    canClose()
                 }
             </footer>
         </section>
