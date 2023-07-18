@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "./Tickets.css"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export const TicketList = ({ searchTermState }) => { // searchTermsState: state variable "inherited" from parent, TicketContainer.
     
@@ -101,7 +101,7 @@ export const TicketList = ({ searchTermState }) => { // searchTermsState: state 
     )    
 
 
-    // *** HTML OF TICKET LIST PAGE ***
+    // *** HTML (JSX) OF TICKET LIST PAGE ***
     // staff will display buttons to toggle "Emergency Only" and "Show All"
     // non-staff will display buttons to navigate to "Create Ticket," toggle his "Open Tickets" and "All My Tickets"
 
@@ -127,7 +127,10 @@ export const TicketList = ({ searchTermState }) => { // searchTermsState: state 
                 filteredTickets.map(
                     (ticket) => {
                         return <section className="ticket">
-                            <header>{ticket.description}</header>
+                            <header>
+                                <Link to={`/tickets/${ticket.id}/edit`}>Ticket {ticket.id}</Link>
+                            </header>
+                            <section>{ticket.description}</section>
                             <footer>Emergency: {ticket.emergency ? "🧨" : "No"}</footer>
                         </section>
                     }
